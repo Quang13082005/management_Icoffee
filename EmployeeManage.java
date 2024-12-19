@@ -10,7 +10,6 @@ public class EmployeeManage {
         employeeList.add(new Employee("E002", "Bob", "Developer", 900.0));
         employeeList.add(new Employee("E003", "Charlie", "Tester", 800.0));
         employeeList.add(new Employee("E004", "Alice", "Manager", 1200.5));
-
         int choice;
 
         do {
