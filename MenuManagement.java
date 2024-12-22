@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ManageMenu {
+public class MenuManagement {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         List<Menu> menuList = new ArrayList<Menu>();
@@ -64,8 +64,6 @@ public class ManageMenu {
             }
         } while (choice != 6);
     }
-
-    // Function add menu
     /**
      * Function add menu
      * @param menuList List
@@ -89,8 +87,6 @@ public class ManageMenu {
         System.out.println("Menu added successfully.");
 
     }
-
-    // Function edit menu
     /**
      * Function edit menu
      * @param oldname String
@@ -116,8 +112,6 @@ public class ManageMenu {
             System.out.println("Name of the menu not found!");
         }
     }
-
-    // Function Delete Menu
     /**
      * Function Delete Menu
      * @param nameDelete String
@@ -137,8 +131,6 @@ public class ManageMenu {
             System.out.println("Name of the menu not found!");
         }
     }
-
-    // Function Show menu
     /**
      * Function Show menu
      * @param menuList List
@@ -152,9 +144,7 @@ public class ManageMenu {
                 System.out.println(menu);
             }
         }
-    }
-
-    // Function Search menu by name
+    }g
     /**
      * Function Search menu by name
      * @param menuList List
