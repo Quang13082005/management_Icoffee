@@ -144,7 +144,7 @@ public class MenuManagement {
                 System.out.println(menu);
             }
         }
-    }g
+    }
     /**
      * Function Search menu by name
      * @param menuList List
