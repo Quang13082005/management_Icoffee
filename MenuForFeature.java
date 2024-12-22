@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class CreateMenuForFeature {
+public class MenuForFeature {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int choice;
