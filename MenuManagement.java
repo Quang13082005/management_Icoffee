@@ -11,6 +11,8 @@ public class MenuManagement {
         menuList.add(new Menu("3", "Salad Rau Xanh", 50000.0, "Rau xanh tươi mát với sốt dầu giấm chua ngọt.", "Món Khai Vị"));
         menuList.add(new Menu("4", "Burger Gà", 75000.0, "Bánh burger nhân gà nướng, rau xà lách và sốt đặc biệt.", "Burger"));
         menuList.add(new Menu("5", "Khoai Tây Chiên", 30000.0, "Khoai tây chiên giòn, kèm sốt cà chua.", "Món Ăn Kèm"));
+        menuList.add(new Menu("6", "Pizza Hải Sản", 110000.0, "Pizza với hải sản tươi ngon6", "Pizza"));
+
         int choice;
         /**
          * Create Menu to Manage
@@ -34,6 +36,7 @@ public class MenuManagement {
                     break;
                 case 2:
                     System.out.println("----- Edit menu -----");
+                    showMenu(menuList);
                     System.out.print("Please enter the name of the menu to edit: ");
                     String oldname = sc.nextLine();
                     System.out.print("Please enter the price of the menu to edit: ");
@@ -43,9 +46,7 @@ public class MenuManagement {
                 case 3:
                     System.out.println("----- Delete menu -----");
                     showMenu(menuList);
-                    System.out.print("Please enter the name of the menu to delete: ");
-                    String nameDelete = sc.nextLine();
-                    deleteMenu(nameDelete, menuList);
+                    deleteMenuById(menuList);
                     break;
                 case 4:
                     System.out.println("----- Show menu -----");
@@ -72,10 +73,23 @@ public class MenuManagement {
         Scanner sc = new Scanner(System.in);
         System.out.print("Please add id: ");
         String id = sc.nextLine();
+
+        for (Menu menu : menuList) {
+            if (menu.getId().equals(id)) {
+                System.out.println("Id already exists! Please try again!");
+                return;
+            }
+        }
         System.out.print("Please add name: ");
         String name = sc.nextLine();
-        System.out.print("Please add price: ");
-        double price = sc.nextDouble();
+        double price = -1;
+        while (price <= 0) {
+            System.out.print("Please add price: ");
+            price = sc.nextDouble();
+            if (price <= 0) {
+                System.out.println("Price must be positive number!");
+            }
+        }
         sc.nextLine();
         System.out.print("Please add description: ");
         String description = sc.nextLine();
@@ -102,9 +116,15 @@ public class MenuManagement {
                 System.out.print("Enter new name: ");
                 String newName = sc.nextLine();
                 menu.setName(newName);
+                double newPrice = -1;
+                while (newPrice <= 0) {
                 System.out.print("Enter new price: ");
-                double newPrice = sc.nextDouble();
+                newPrice = sc.nextDouble();
                 menu.setPrice(newPrice);
+                if (newPrice <= 0) {
+                    System.out.println("Error: Price must be positive number!");
+                    }
+                }
                 System.out.println("Edit menu successfully.");
             }
         }
@@ -113,20 +133,38 @@ public class MenuManagement {
         }
     }
     /**
-     * Function Delete Menu
-     * @param nameDelete String
+     * Function Delete Menu By Id
      * @param menuList List
      */
-    public static void deleteMenu(String nameDelete, List<Menu> menuList) {
+    public static void deleteMenuById(List<Menu> menuList) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Add a name you want to delete: ");
+        String nameDelete = sc.nextLine();
         boolean isFound = false;
         for (Menu menu : menuList) {
             if (menu.getName().equalsIgnoreCase(nameDelete)) {
                 isFound = true;
-                menuList.remove(menu);
-                System.out.println("Name of the menu deleted successfully.");
-                break;
+                System.out.println(menu);
             }
         }
+        if (isFound) {
+            System.out.print("Add id you want to delete: ");
+            String idDelete = sc.nextLine();
+            boolean isDelete = false;
+
+            for (Menu menu : menuList) {
+                if (menu.getId().equals(idDelete)) {
+                    isDelete = true;
+                    menuList.remove(menu);
+                    System.out.println("Deleted id " + idDelete + " successfully.");
+                    break;
+                }
+            }
+            if (!isDelete) {
+                System.out.println( idDelete + " not found in menu list.");
+            }
+        }
+
         if (!isFound) {
             System.out.println("Name of the menu not found!");
         }
@@ -151,14 +189,15 @@ public class MenuManagement {
      */
     public static void searchMenuByNameOrPrice (List<Menu> menuList) {
         Scanner sc = new Scanner(System.in);
+        List <Menu> menuSearch = new ArrayList<>();
         System.out.print("Please enter the name of the menu to search: ");
         String nameSearch = sc.nextLine();
         boolean isFound = false;
         for (Menu menu : menuList) {
             if (menu.getName().equalsIgnoreCase(nameSearch)) {
                 System.out.println(menu);
+                menuSearch.add(menu);
                 isFound = true;
-                break;
             }
         }
         if(!isFound) {

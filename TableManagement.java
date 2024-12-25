@@ -6,6 +6,11 @@ public class TableManagement {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         List<Table> tableList = new ArrayList<Table>();
+
+        tableList.add(new Table("T001", true, 20.5, 4));
+        tableList.add(new Table("T002", false, 15.0, 2));
+        tableList.add(new Table("T003", true, 30.0, 6));
+        tableList.add(new Table("T004", true, 25.0, 5));
         int choice;
         do {
             System.out.println("----- Manage Table -----");
@@ -63,11 +68,40 @@ public class TableManagement {
             }
         }
 
-        System.out.print("Add Table Available (true: available / false: unavailable): ");
-        Boolean isAvailable = sc.nextBoolean();
+        double price = -1;
+        while (price <= 0) {
+            System.out.print("Enter Table Price: ");
+            price = sc.nextDouble();
+            if (price <= 0) {
+                System.out.println("Error: Price must be a positive number.");
+            }
+        }
         sc.nextLine();
+        int availableSlot = -1;
+        while (availableSlot <= 0) {
+            System.out.print("Add Table Available Slot: ");
+            availableSlot = sc.nextInt();
+            if (availableSlot <= 0) {
+                System.out.println("Error: Available slot must be a positive number.");
+            }
+        }
+        sc.nextLine();
+        boolean isAvailable = false;
+        while (true) {
+            System.out.print("Add Table Available (1-Available / 2-Unavailable): ");
+            int input = sc.nextInt();
 
-        Table table = new Table(tableId, isAvailable);
+            if (input == 1) {
+                isAvailable = true;
+                break;
+            } else if (input == 2) {
+                isAvailable = false;
+                break;
+            }else{
+            System.out.println("Please add 1 or 2!");
+        }
+    }
+        Table table = new Table (tableId, isAvailable, price, availableSlot);
         tableList.add(table);
         System.out.println("Add Table Successfully!");
     }
@@ -81,14 +115,44 @@ public class TableManagement {
         String editId = sc.nextLine();
 
         boolean isAvailable = false;
-        for (Table table : tableList){
-            if (table.getTableId().equals(editId)){
-                System.out.print("Add Status Table (true: available / false: unavailable): ");
-                Boolean status = sc.nextBoolean();
+        for (Table table : tableList) {
+            if (table.getTableId().equals(editId)) {
+                boolean status = false;
+                while (true) {
+                    System.out.print("Add New Status Table (1-Available / 2-Unavailable): ");
+                    int input = sc.nextInt();
+                    if (input == 1) {
+                        status = true;
+                        break;
+                    } else if (input == 2) {
+                        status = false;
+                        break;
+                    } else {
+                        System.out.println("Please add 1 or 2!");
+                    }
+                }
                 table.setAvailable(status);
-                System.out.println("Edit Status Table Successfully!");
                 isAvailable = true;
-                break;
+
+                double price = -1;
+                while (price <= 0) {
+                    System.out.print("Add New Price to edit: ");
+                    price = sc.nextDouble();
+                    table.setPrice(price);
+                    if (price <= 0) {
+                        System.out.println("Error: Price must be a positive number.");
+                    }
+                }
+                int availableSlot = -1;
+                while (availableSlot <= 0) {
+                    System.out.print("Add New Available Slot: ");
+                    availableSlot = sc.nextInt();
+                    table.setAvailableSlot(availableSlot);
+                    if (availableSlot <= 0) {
+                        System.out.println("Error: Available slot must be a positive number.");
+                    }
+                }
+                System.out.println("Edit Table Successfully!");
             }
         }
         if (!isAvailable){
@@ -100,10 +164,14 @@ public class TableManagement {
      * @param tableList List
      */
     public static void displayTable(List<Table> tableList) {
-        for (Table table : tableList) {
+        if (tableList.isEmpty()) {
+            System.out.println("Nothing to Display!");
+        } else{
+            for (Table table : tableList) {
                 System.out.println(table);
+        }
             }
-            }
+    }
     /**
      * Function delete table
      * @param tableList List
