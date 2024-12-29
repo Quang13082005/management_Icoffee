@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class CreateMenuForFeature {
     public static void main(String[] args) {
@@ -48,15 +49,12 @@ public class CreateMenuForFeature {
 
     /**
      * Function: common to manage Menu Employee
+     *
      * @param employeeList List<Employee>
      */
 
     public static void manageMenuEmployee(List<Employee> employeeList) {
         Scanner sc = new Scanner(System.in);
-        employeeList.add(new Employee("E001", "Alice", "Manager", 1200.5));
-        employeeList.add(new Employee("E002", "Bob", "Developer", 900.0));
-        employeeList.add(new Employee("E003", "Charlie", "Tester", 800.0));
-        employeeList.add(new Employee("E004", "Alice", "Manager", 1200.5));
         int choice;
 
         do {
@@ -100,32 +98,62 @@ public class CreateMenuForFeature {
      */
     public static void addEmployee(List<Employee> employeeList) {
         Scanner sc = new Scanner(System.in);
+        boolean isIDValid = false;
 
         System.out.println("Enter Employee Information");
-        System.out.print("Enter Employee ID: ");
-        String id = sc.nextLine();
-        for (Employee employee : employeeList) {
-            if (employee.getEmployeeId().equals(id)) {
-                System.out.println("This " + id + " already exists in the list, please try again");
-                return;
+        String id = null;
+        Pattern ID = Pattern.compile("^[A-Z]{2}\\d{6}$");
+        while (!isIDValid) {
+            boolean isFound = false;
+            System.out.print("Enter Employee ID: ");
+            id = sc.nextLine();
+            if (ID.matcher(id).matches()) {
+                for (Employee employee : employeeList) {
+                    if (employee.getEmployeeId().equals(id)) {
+                        isFound = true;
+                        System.out.println("This " + id + " already exists in the list, please try again");
+                        break;
+                    }
+                }
+                if (!isFound) {
+                    isIDValid = true;
+                }
+            } else {
+                System.out.println("Invalid input ID. Please use the format: 2 uppercase letters followed by 6 digits.");
+                System.out.println("Example: DE201453");
             }
         }
 
-        System.out.print("Enter Employee Name: ");
-        String name = sc.nextLine();
+        String name = "";
+        Pattern Name = Pattern.compile("^([A-Z][a-z]+)(\\s[A-Z][a-z]+)*$");
+        boolean isNameValid = false;
+        while (!isNameValid) {
+            System.out.print("Enter Employee Name: ");
+            name = sc.nextLine();
+            if (!Name.matcher(name).matches()) {
+                System.out.println("Invalid format name. Please capitalize the first letter.");
+                System.out.println("Example: Nguyen Hai Quang");
+            } else {
+                isNameValid = true;
+            }
+        }
 
         System.out.print("Enter Employee Position: ");
         String position = sc.nextLine();
 
-        System.out.print("Enter Employee Salary: ");
-        double salary = sc.nextDouble();
-        if (salary < 0) {
-            System.out.println("Error: Price must be positive number!");
-        } else {
-            Employee employee = new Employee(id, name, position, salary);
-            employeeList.add(employee);
-            System.out.println(name + "'s information has been added successfully.");
-        }
+        double salary;
+        do {
+            System.out.println("Enter Employee Salary: ");
+            salary = sc.nextDouble();
+            if (salary < 0) {
+                System.out.println("Error: Price must be positive number!");
+            } else {
+                Employee employee = new Employee(id, name, position, salary);
+                employeeList.add(employee);
+                System.out.println(name + "'s information has been added successfully.");
+            }
+        } while (salary < 0);
+
     }
 
     /**
